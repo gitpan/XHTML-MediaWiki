@@ -1,0 +1,58 @@
+---
+name: XHTML-MediaWiki
+version: 0.01
+author: []
+abstract: Convert MediaWiki text to xhtml
+license: perl
+resources:
+  license: http://dev.perl.org/licenses/
+requires:
+  HTML::Parser: 0
+  perl: 5.6.0
+build_requires:
+  Test::XML: 0
+  Test::XML::Order: 0
+recommends:
+  Test::Pod: 0
+  Test::Pod::Coverage: 0
+  Test::XML: 0
+provides:
+  Block:
+    file: lib/XHTML/MediaWiki.pm
+  Block::Header:
+    file: lib/XHTML/MediaWiki.pm
+  Block::Nested:
+    file: lib/XHTML/MediaWiki.pm
+  Block::Ordered:
+    file: lib/XHTML/MediaWiki.pm
+  Block::P:
+    file: lib/XHTML/MediaWiki.pm
+  Block::Paragraph:
+    file: lib/XHTML/MediaWiki.pm
+  Block::Pre:
+    file: lib/XHTML/MediaWiki.pm
+  Block::Prewiki:
+    file: lib/XHTML/MediaWiki.pm
+  Block::Ruby:
+    file: lib/XHTML/MediaWiki.pm
+  Block::Special:
+    file: lib/XHTML/MediaWiki.pm
+  Block::Start:
+    file: lib/XHTML/MediaWiki.pm
+  Block::Template:
+    file: lib/XHTML/MediaWiki.pm
+  Block::Unordered:
+    file: lib/XHTML/MediaWiki.pm
+  XHTML::MediaWiki:
+    file: lib/XHTML/MediaWiki.pm
+    version: 0.00
+  XHTML::MediaWiki::Parser:
+    file: lib/XHTML/MediaWiki.pm
+  XHTML::MediaWiki::Parser::Block:
+    file: lib/XHTML/MediaWiki.pm
+  XHTML::MediaWiki::Parser::Block::Line:
+    file: lib/XHTML/MediaWiki.pm
+generated_by: Module::Build version 0.2807
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2
