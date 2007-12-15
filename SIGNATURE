@@ -1,0 +1,45 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.55.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 4ede7f91378bab3ecb9e29153a5544eb4f7c7b39 Build.PL
+SHA1 ab900fdb2e0288efef465386ff28a1a71b1e340b MANIFEST
+SHA1 0cd20241c426989718674aa3fa8c5e88830c6fc3 META.yml
+SHA1 c2c8c4df966e6877e5f5c335559336f80f064d7d README
+SHA1 0aa5774478e409f8878a43baf73a4fc16a552a63 lib/XHTML/MediaWiki.pm
+SHA1 0b3fe95e5cca173245f11ef2c81c55b1c7f001a5 t/00signature.t
+SHA1 c9bc56dc40af36d8b9a36ddde1a5586d751ee0da t/blending.t
+SHA1 d5e8091b7e4ef0472247279110cbdd5ced38f5e8 t/cdata.t
+SHA1 86c9715845d672e783b560bfe352189a37f57006 t/comment.t
+SHA1 5cc9ba0dd327dfd250ec06e4a02e4cb6e343240a t/coverage.t
+SHA1 db053789dece0cb8aa2c16896f1c5c335d1482a3 t/div.t
+SHA1 e724b9968d66c4d0c3e3ff09b5787eaef6845639 t/headers.t
+SHA1 bec6fdebdff35273fcf135c826a075546fe43139 t/line.t
+SHA1 8ee2fdd58f18d40893aad0c5105d9344c314cba2 t/nowiki.t
+SHA1 4663350f41552d4aad0f2a32b690b57d91e96d93 t/ordered.t
+SHA1 47194b231f1b11915a8b0e8b1d7d2997c8d00e57 t/para_break.t
+SHA1 6f58b10bd30ac5842eeedc32ddb4c72902752011 t/paragraph.t
+SHA1 57a6681a64ff5bf1ee058704d0545196d47d1edb t/pre.t
+SHA1 a3df2c1fb26b4d6a2c37d48155e1e0840565d3de t/template.t
+SHA1 d781743e755d44ba9d310637f1419eacf067d27f t/test02.t
+SHA1 b4a0078a2a22fe90b963df1d08e322ad40e4177f t/unordered.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+
+iGcEARECACcFAkdj5ocgGmh0dHA6Ly93d3cuZ2FtMy5uZXQvcG9saWN5Lmh0bWwA
+CgkQliSr/X1H0FzEZACdHTDUC6Zi0QX12BF2/Dr2SJUSYxMAoIXHw3HsnSYeYp3K
+Ov/OdkPGB+4P
+=MZ/i
+-----END PGP SIGNATURE-----

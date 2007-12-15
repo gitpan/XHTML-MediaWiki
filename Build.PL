@@ -4,12 +4,13 @@ use Module::Build;
 
 my $builder = Module::Build->new(
     module_name   => 'XHTML::MediaWiki',
-    dist_version => '0.01',
+#    dist_version_from => 'dd',
     dist_abstract => 'Convert MediaWiki text to xhtml',
     license       => 'perl',
     requires => {
     	'perl'		=> '5.6.0',
  	'HTML::Parser'  => 0,
+	'Params::Validate' => '0.85',
     },
     build_requires => {
 	'Test::XML' => 0,
@@ -20,8 +21,8 @@ my $builder = Module::Build->new(
         'Test::Pod::Coverage' => 0,
 	'Test::XML' => 0,
     },
-#    create_readme => 1,
-#    sign           => 1,
+    create_readme => 1,
+    sign          => 1,
 );
 
 $builder->create_build_script;

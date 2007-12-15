@@ -1,0 +1,20 @@
+NAME
+    XHTML::MediaWiki - Translate Wiki markup into xhtml
+
+VERSION
+    Version 0.02
+
+SYNOPSIS
+            use XHTML::MediaWiki;
+            my $mediawiki = XHTML::MediaWiki->new();
+            my $xhtm = $mediawiki->format($text);
+
+DESCRIPTION
+    <http://www.mediawiki.org/> and its sister projects use the PHP
+    Mediawiki to format their pages. This module attempts to duplicate the
+    Mediawiki formatting rules. Those formatting rules can be simple and
+    easy to use, while providing more advanced options for the power user.
+
+AUTHOR
+    "G. Allen Morris III" <gam3@gam3.net>
+
