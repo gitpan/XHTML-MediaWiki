@@ -2,7 +2,7 @@ NAME
     XHTML::MediaWiki - Translate Wiki markup into xhtml
 
 VERSION
-    Version 0.03
+    Version 0.04
 
 SYNOPSIS
             use XHTML::MediaWiki;

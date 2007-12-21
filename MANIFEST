@@ -1,6 +1,10 @@
 Build.PL
+Changes
 lib/XHTML/MediaWiki.pm
+Makefile.PL
 MANIFEST			This list of files
+META.yml
+README
 t/00signature.t
 t/blending.t
 t/cdata.t
@@ -8,15 +12,15 @@ t/comment.t
 t/div.t
 t/headers.t
 t/line.t
+t/links.t
 t/nowiki.t
 t/ordered.t
 t/para_break.t
 t/paragraph.t
+t/pod.t
+t/pod_coverage.t
 t/pre.t
 t/template.t
 t/test02.t
 t/unordered.t
-META.yml
-README
-Makefile.PL
 SIGNATURE    Added here by Module::Build

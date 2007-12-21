@@ -9,11 +9,11 @@ XHTML::MediaWiki - Translate Wiki markup into xhtml
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 our $DEBUG = 0;
 
@@ -201,7 +201,7 @@ sub get_block
         push(@{$self->{lines}}, $self->{line});
         $self->{line} = XHTML::MediaWiki::Parser::Block::Line->new(state => 'wiki');
     }
-use Data::Dumper;
+
     sub is_paragraph
     {
         my $self = shift;
@@ -303,7 +303,7 @@ die "helpme $tagname";
 #               push @$tagstack, $tagname;
             } elsif (my $blockname = $info->{block}) {
                 $parser->close_block( new_state => $blockname );
-use Data::Dumper;
+
 #               $parser->{state} = $blockname;
                 unless ($info->{notag}) {
                     $parser->append_text("<$tagname>");
@@ -741,6 +741,8 @@ sub _find_blocks_in_html
                 if ($parser->check_current_block) {
                     if ($parser->in_paragraph) {
                         $parser->close_block();
+                    } elsif ($parser->in_prewiki) {
+                        $parser->close_block();
                     } else {
                     }
                 } else {
@@ -748,9 +750,10 @@ sub _find_blocks_in_html
                         $line = "<br/>";
                     }
                 }
-            } elsif ($line =~ m/^\s+/) {
+            } elsif ($line =~ m/^\s+(.*)$/) {
+	        $line = $1;
                 $parser->close_block( new_state => 'prewiki', auto_merge => 1 );
-#die Dumper $parser, $line if $line =~ /Saran/;
+
                 $parser->{last} = 'prewiki';
             } elsif ($line =~ m/^(#+)\s*(.*)\s*$/) {
                 my $x = length $1;
@@ -791,8 +794,6 @@ sub _find_blocks_in_html
             );
         push @blocks, $new_block;
     }
-use Data::Dumper;
-#warn Dumper \@blocks;
 
     return @blocks;
 }
@@ -908,13 +909,30 @@ sub emphasized
 sub link
 {
    my $self = shift;
-   my $link = shift;
-   my $extra = shift;
+   my $link = shift || '';
+   my $extra = shift || '';
    my $type = shift;
    my $text = $link;
    if ($type) {
        $text = ++$self->{footnote};
    }
+   qq|<a href='$link'>$text$extra</a>|;
+}
+
+sub wikilink
+{
+   my $self = shift;
+   my $string = shift;
+   my $extra = shift;
+
+   my ($link, $text);
+
+   if ($string =~ /\|/) {
+       ($link, $text) = split('\|', $string);
+   } else {
+       $link = $text = $string;
+   }
+
    qq|<a href='$link'>$text$extra</a>|;
 }
 
@@ -926,7 +944,7 @@ sub find_links
     return '' unless defined $text;
 
     $text =~ s/\[\[([^\]]*)\]\]([A-Za-z0-9]*)/$self->link($1, $2, 0)/ge;
-    $text =~ s/\[([^\]]*)\]/$self->link($1, '', 1)/ge;
+    $text =~ s/\[([a-zA-Z]+:[^\]]*)\]/$self->link($1, '', 1)/ge;
 
     return $text;
 }
@@ -989,9 +1007,7 @@ sub format
         my $self = shift;
         my $formatter = $self->formatter;
         my $text = $self->SUPER::formatted_text();
-use Data::Dumper;
-#die $text, Dumper $self;;
-#       my $x = length($self->{args}->[0]);
+
         my $newtext = $text;
         $newtext =~ s/<[^>]+>//g;
         $newtext =~ s/\s/_/g;
@@ -1083,7 +1099,7 @@ use Data::Dumper;
     package
       Block::Nested;
     use base "Block";
-use Data::Dumper;
+
     sub new
     {
         my $class = shift;
