@@ -2,6 +2,7 @@ use warnings;
 use strict;
 
 package XHTML::MediaWiki;
+#XHTML::MediaWiki::
 
 =head1 NAME
 
@@ -9,11 +10,11 @@ XHTML::MediaWiki - Translate Wiki markup into xhtml
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 our $DEBUG = 0;
 
@@ -36,16 +37,16 @@ use Carp qw(carp confess croak);
 use CGI qw(:standard);
 use Scalar::Util qw(blessed);
 
-use URI;
-use URI::Escape;
-
 use HTML::Parser;
 
 sub new
 {
     my $class = shift;
 
-    bless {@_}, $class;
+    bless {
+        link_path => '',
+	@_
+    }, $class;
 }
 
 sub reset_counters
@@ -60,7 +61,7 @@ sub get_block
     my $self = shift;
     my $type = shift;
 
-    my $ret = 'Block::' . ucfirst($type || 'special');
+    my $ret = 'XHTML::MediaWiki::Block::' . ucfirst($type || 'special');
 }
 
 # This sub recognizes three states:
@@ -94,6 +95,7 @@ sub get_block
             },
             eol => 0,
         });
+
         my $self = bless { %p }, $class;
 
         return $self;
@@ -108,7 +110,6 @@ sub get_block
     {
         my $self = shift;
         my $text = shift;
-
         $self->{text} .= $text;
     }
 
@@ -561,13 +562,6 @@ $current->{line} = undef;
         }
     }
 
-    sub pre
-    {
-        my $self = shift;
-die;
-        $self->{pre};
-    }
-
     sub check_current_block
     {
         my $self = shift;
@@ -750,7 +744,7 @@ sub _find_blocks_in_html
                         $line = "<br/>";
                     }
                 }
-            } elsif ($line =~ m/^\s+(.*)$/) {
+            } elsif ($line =~ m/^\s(\s*.*)$/) {
 	        $line = $1;
                 $parser->close_block( new_state => 'prewiki', auto_merge => 1 );
 
@@ -915,24 +909,9 @@ sub link
    my $text = $link;
    if ($type) {
        $text = ++$self->{footnote};
-   }
-   qq|<a href='$link'>$text$extra</a>|;
-}
-
-sub wikilink
-{
-   my $self = shift;
-   my $string = shift;
-   my $extra = shift;
-
-   my ($link, $text);
-
-   if ($string =~ /\|/) {
-       ($link, $text) = split('\|', $string);
    } else {
-       $link = $text = $string;
+       $link = $self->{link_path} . $link;
    }
-
    qq|<a href='$link'>$text$extra</a>|;
 }
 
@@ -954,7 +933,7 @@ sub template_text
     my $self = shift;
     my $text = shift;
     die if @_;
-    'No template: ' . $text;
+    '<b style="color: red;">No template for: ' . $text . '</b>';
 }
 
 sub format_line
@@ -971,6 +950,9 @@ sub format_line
     $text =~ s!$emphasized_tag!$self->emphasized($1)!eg;
 
     $text = $self->find_links($text);
+
+    my $template_tag = qr/{{\s*([a-zA-Z0-9][a-z0-9|]*)\s*}}/;
+    $text =~ s!$template_tag!$self->template_text($1)!eg;
    
     return $text;
 }
@@ -989,9 +971,9 @@ sub format
 
 {
     package
-      Block::Start;
+      XHTML::MediaWiki::Block::Start;
 
-    use base "Block";
+    use base "XHTML::MediaWiki::Block";
     sub formatted_text
     {
         "<!-- start wiki -->\n";
@@ -999,8 +981,8 @@ sub format
 }
 {
     package
-      Block::Header;
-    use base "Block";
+      XHTML::MediaWiki::Block::Header;
+    use base "XHTML::MediaWiki::Block";
 
     sub formatted_text
     {
@@ -1017,23 +999,8 @@ sub format
 
 {
     package
-      Block::Template;
-    use base "Block";
-
-    sub formatted_text
-    {
-        my $self = shift;
-        my $formatter = $self->formatter;
-        $formatter->template_text(
-            join(' ', @{$self->{args}})
-        );
-    }
-
-}
-{
-    package
-      Block::Special;
-    use base "Block";
+      XHTML::MediaWiki::Block::Special;
+    use base "XHTML::MediaWiki::Block";
 
     sub formatted_text
     {
@@ -1056,8 +1023,8 @@ sub format
 }
 {
     package
-      Block::P;
-    use base "Block";
+      XHTML::MediaWiki::Block::P;
+    use base "XHTML::MediaWiki::Block";
 
     sub formatted_text
     {
@@ -1067,8 +1034,8 @@ sub format
 }
 {
     package
-      Block::Paragraph;
-    use base "Block";
+      XHTML::MediaWiki::Block::Paragraph;
+    use base "XHTML::MediaWiki::Block";
 
     sub formatted_text
     {
@@ -1097,8 +1064,8 @@ sub format
 
 {
     package
-      Block::Nested;
-    use base "Block";
+      XHTML::MediaWiki::Block::Nested;
+    use base "XHTML::MediaWiki::Block";
 
     sub new
     {
@@ -1192,22 +1159,22 @@ die 'bob';
 
 {
     package
-      Block::Ordered;
-    use base "Block::Nested";
+      XHTML::MediaWiki::Block::Ordered;
+    use base "XHTML::MediaWiki::Block::Nested";
     sub start_block { "<ol>\n" }
     sub end_block { "</ol>\n" }
 }
 {
     package
-      Block::Unordered;
-    use base "Block::Nested";
+      XHTML::MediaWiki::Block::Unordered;
+    use base "XHTML::MediaWiki::Block::Nested";
     sub start_block { "<ul>\n" }
     sub end_block { "</ul>\n" }
 }
 {
     package
-      Block::Pre;
-    use base "Block";
+      XHTML::MediaWiki::Block::Pre;
+    use base "XHTML::MediaWiki::Block";
 
     sub formatted_text {
         my $self = shift;
@@ -1218,8 +1185,8 @@ die 'bob';
 }
 {
     package
-      Block::Prewiki;
-    use base "Block";
+      XHTML::MediaWiki::Block::Prewiki;
+    use base "XHTML::MediaWiki::Block";
 
     sub formatted_text
     {
@@ -1232,8 +1199,8 @@ die 'bob';
 }
 {
     package
-      Block::Ruby;
-    use base "Block";
+      XHTML::MediaWiki::Block::Ruby;
+    use base "XHTML::MediaWiki::Block";
 
     sub formatted_text
     {
@@ -1245,7 +1212,7 @@ die 'bob';
 }
 {
     package
-      Block;
+      XHTML::MediaWiki::Block;
     use Params::Validate qw (validate ARRAYREF);
 
     sub new
@@ -1371,6 +1338,15 @@ __END__
 =head1 AUTHOR
 
 "G. Allen Morris III" <gam3@gam3.net>
+
+=head1 COPYRIGHT
+
+Copyright (C) 2008 G. Allen Morris III, all rights reserved.
+
+=head1 LICENSE
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
 
 =cut
 

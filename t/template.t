@@ -18,15 +18,17 @@ template
 {{
 template}}
 {{{ template }}}
-<div>
-{{
-This
-is 
-a
-template
-}}
 EOT
 
-print $xhtml;
-ok($xhtml, "headers");
+$cmp = <<EOT;
+<p><b style="color: red;">No template for: template</b>
+<b style="color: red;">No template for: template</b>
+</p>
+<div><p><b style="color: red;">No template for: template</b>
+</p>
+</div><p><b style="color: red;">No template for: template</b>
+{<b style="color: red;">No template for: template</b>}</p>
+EOT
+
+is($xhtml, $cmp, "regression");
 

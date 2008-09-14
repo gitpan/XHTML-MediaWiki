@@ -1,2 +1,6 @@
+0.05 Sun Sep 14 07:00:40 EDT 2008
+    - Clean up of documentation
+
 0.04 Fri Dec 21 14:49:20 EST 2007
     - fix to prewiki to remove leading space 
+    - add t/prewiki.t to test leading spaces
