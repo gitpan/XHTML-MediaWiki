@@ -10,9 +10,11 @@ t/cdata.t
 t/comment.t
 t/div.t
 t/headers.t
+t/html.t
 t/line.t
 t/links.t
 t/nowiki.t
+t/misc.t
 t/ordered.t
 t/para_break.t
 t/paragraph.t

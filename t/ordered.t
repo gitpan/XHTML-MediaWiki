@@ -11,19 +11,28 @@ $xhtml = $mediawiki->format(<<EOT);
 <div>
 # one
 ## one.one
+### one.one.three
+## one.two
 # two
+## two.one
 # three
 </div>
 EOT
 
 $cmp = <<EOP;
-<div>
-<ol>
+<div><ol>
 <li>one<ol>
-<li>one.one</li>
+<li>one.one<ol>
+<li>one.one.three</li>
 </ol>
 </li>
-<li>two</li>
+<li>one.two</li>
+</ol>
+</li>
+<li>two<ol>
+<li>two.one</li>
+</ol>
+</li>
 <li>three</li>
 </ol>
 </div>

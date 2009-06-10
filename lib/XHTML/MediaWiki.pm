@@ -10,11 +10,11 @@ XHTML::MediaWiki - Translate Wiki markup into xhtml
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 our $DEBUG = 0;
 
@@ -39,6 +39,23 @@ use Scalar::Util qw(blessed);
 
 use HTML::Parser;
 
+=head2 Constructors
+
+=over 4
+
+=item
+new
+
+C<new> takes several named parameters:
+
+=item link_path
+
+C<link_path> is the C<base> url to use.  
+
+=back
+
+=cut
+
 sub new
 {
     my $class = shift;
@@ -49,12 +66,29 @@ sub new
     }, $class;
 }
 
+=head2 Methods
+
+=over 4
+
+=item reset_counters()
+
+call this method to reset the footnoot counter.
+
+=cut
+
+
 sub reset_counters
 {
     my $self = shift;
 
     $self->{footnote} = 0;
 }
+
+=item get_block()
+
+If you would like to override the Block objects you can override this meathod.
+
+=cut
 
 sub get_block
 {
@@ -119,6 +153,7 @@ sub get_block
       XHTML::MediaWiki::Parser::Block;
 
     use Params::Validate qw (validate);
+    use Carp qw(croak);
 
     sub new
     {
@@ -127,7 +162,7 @@ sub get_block
             type => 1,
             level => 0,
         });
-        die caller if ($p{type} eq 'unordered' && !$p{level});
+        croak("internal error") if ($p{type} eq 'unordered' && !$p{level});
         my $self =
             bless {
                 lines => [],
@@ -141,6 +176,7 @@ sub get_block
     {
         shift->{type};
     }
+
     sub args
     {
         my $self = shift;
@@ -171,7 +207,7 @@ sub get_block
         my $line = $self->{line};
 
         if ($line) {
-            $line->state eq 'nowiki';
+            return $line->state eq 'nowiki';
         } else {
             return 0;
         }
@@ -181,7 +217,7 @@ sub get_block
     {
         my $self = shift;
         my $text = shift;
-        die if @_;
+        die "extra arguments" if @_;
 
         my $line = $self->get_line();
         $line->append($text);
@@ -191,7 +227,7 @@ sub get_block
     {
         my $self = shift;
 
-        push(@{$self->{lines}}, $self->{line});
+        push(@{$self->{lines}}, $self->{line}) if $self->{line};
         $self->{line} = XHTML::MediaWiki::Parser::Block::Line->new(state => 'nowiki');
     }
 
@@ -199,7 +235,7 @@ sub get_block
     {
         my $self = shift;
 
-        push(@{$self->{lines}}, $self->{line});
+        push(@{$self->{lines}}, $self->{line}) if $self->{line};
         $self->{line} = XHTML::MediaWiki::Parser::Block::Line->new(state => 'wiki');
     }
 
@@ -220,7 +256,8 @@ sub get_block
     sub set_end_line
     {
         my $self = shift;
-        my $cnt = shift or die;
+        my $cnt = shift or croak "need count";
+
         my $line = $self->{line};
         if (!defined $line) {
             $line = $self->{lines}[-1] || XHTML::MediaWiki::Parser::Block::Line->new(state => 'dummy');
@@ -232,6 +269,13 @@ sub get_block
         $self;
     }
 }
+
+=item encode()
+
+You can override the enode function if you would like to change
+what is encoded.  Currently only &, <, and > are encoded.
+
+=cut
 
 sub encode
 {
@@ -260,6 +304,7 @@ sub _close_to
             last if $tag eq $toptag;
         }
     }
+
     return $text;
 }
 
@@ -280,6 +325,7 @@ sub _html_tag
         my $tagstack = $parser->{tag_stack};
         if ($type eq 'E') {
             if ($info->{empty}) {
+warn "empty tags";
 #skip empty tags;
             } elsif ($info->{nowiki}) {
 #               my $text = _close_to($parser, $tagname);
@@ -320,7 +366,7 @@ die "helpme $tagname";
                 my $text = "<$tagname>";
                 $parser->add_block($text);
             } else {
-warn "helpme $tagname";
+die "helpme $tagname";
                 push @$tagstack, $tagname;
             }
         }
@@ -486,8 +532,8 @@ die "This should have been handled by close_block";
 
         if (my $current = $self->{current_block}) {
             if ($p{auto_merge} && $p{new_state} eq $self->{current_block}->block_type) {
-push(@{$current->{lines}}, $current->{line});
-$current->{line} = undef;
+		push(@{$current->{lines}}, $current->{line}) if ($current->{line});
+		$current->{line} = undef;
             } else {
                 push(@{$self->{blocks}},
                     $self->{current_block}
@@ -577,7 +623,7 @@ $current->{line} = undef;
             my $tagstack = $self->{tag_stack};
             my $new_state = $self->{state} || 'paragraph';
             delete $self->{state};
-die caller if $new_state eq 'unordered';
+	    croak() if $new_state eq 'unordered';
             $self->{current_block} = XHTML::MediaWiki::Parser::Block->new(type => $new_state);
             push @{$self->{tag_stack}}, 'paragraph';
         }
@@ -635,7 +681,7 @@ warn "fix";
 sub _find_blocks_in_html
 {
     my $self = shift;
-    my $text = shift;
+    my $text = shift || "";
     die if @_;
 
     my $parser = XHTML::MediaWiki::Parser->new
@@ -895,10 +941,27 @@ sub _strong
     "<strong>$_[1]</strong>";
 }
 
+=item emphasized()
+
+emphasized controls the output of "<em>" tags.
+
+=cut
+
 sub emphasized
 {
     "<em>$_[1]</em>";
 }
+
+=item link()
+
+The link method is often overridden to modify the dispaly and 
+operation of links.
+
+link takes 3 arguments the Link, any extra_text, adn the type of the link;
+
+The type is true for footnotes.
+
+=cut
 
 sub link
 {
@@ -915,6 +978,13 @@ sub link
    qq|<a href='$link'>$text$extra</a>|;
 }
 
+=item find_links()
+
+The find_links() method is also often overridden in order to change the way 
+links are detected.
+
+=cut
+
 sub find_links
 {
     my $self = shift;
@@ -928,6 +998,12 @@ sub find_links
     return $text;
 }
 
+=item template_text
+
+Override this method to control the text that is generated for an unknown template ({{word}}).
+
+=cut
+
 sub template_text
 {
     my $self = shift;
@@ -935,6 +1011,12 @@ sub template_text
     die if @_;
     '<b style="color: red;">No template for: ' . $text . '</b>';
 }
+
+=item format_line
+
+Override this method to extend or modify line level parsing.
+
+=cut
 
 sub format_line
 {
@@ -956,6 +1038,14 @@ sub format_line
    
     return $text;
 }
+
+=item format()
+
+The format method is the only method that needs to be called for the
+normal operation of this object.  You call format() with the raw I<wikitext> and
+it returns the xhtml representation of that I<wikitext>.
+
+=cut
 
 sub format
 {
@@ -982,6 +1072,7 @@ sub format
 {
     package
       XHTML::MediaWiki::Block::Header;
+
     use base "XHTML::MediaWiki::Block";
 
     sub formatted_text
@@ -1008,8 +1099,7 @@ sub format
         my $formatter = $self->formatter;
         my $ret_text = '';
         for my $line (@{$self->{lines}}) {
-            warn "undef line" unless $line;
-            next unless $line;
+            die("internal error") unless $line;
 
             my $text .= $line->{text};
             if ($line->{state} eq 'nowiki') {
@@ -1037,6 +1127,8 @@ sub format
       XHTML::MediaWiki::Block::Paragraph;
     use base "XHTML::MediaWiki::Block";
 
+    use Carp qw(croak);
+
     sub formatted_text
     {
         my $self = shift;
@@ -1044,8 +1136,9 @@ sub format
         my $ret_text = '';
 
         for my $line (@{$self->{lines}}) {
-#           warn "undef line" unless $line;
-            next unless $line;
+use Data::Dumper;
+warn Dumper $self unless $line;
+            die("internal error") unless $line;
 
             my $text .= $line->{text};
             if ($line->{state} eq 'nowiki') {
@@ -1135,11 +1228,8 @@ sub format
         my $current = $self->{added}->[-1] || $self;
         for my $block (@_) {
             my $index = $block->level - $self->level;
-            if ($index == 0) {
-die 'bob';
-            } elsif ($index < 1) {
-die 'bob';
-            } elsif ($index == 1) {
+	    die 'internal error' if $index <= 0;
+            if ($index == 1) {
                 if (my $x = $current->{block}) {
                     $x->nest($block);
                 } else {
@@ -1284,6 +1374,8 @@ die 'bob';
 
     sub level
     {
+       my $x = shift;
+       warn $x;
        0;
     }
 
@@ -1305,8 +1397,7 @@ die 'bob';
         my $text = '';
 
         for my $line (@{$self->{lines}}) {
-warn "undef line" unless $line;
-            next unless $line;
+            die("internal error") unless $line;
 
             $text .= $line->{text};
         }
@@ -1319,8 +1410,7 @@ warn "undef line" unless $line;
         my $text = '';
 
         for my $line (@{$self->{lines}}) {
-warn "undef line" unless $line;
-            next unless $line;
+            die("internal error") unless $line;
 
             if ($line->{state} eq 'nowiki') {
                 $text .= $line->{text};
@@ -1335,13 +1425,19 @@ warn "undef line" unless $line;
 1;
 __END__
 
+=back
+
+=head1 ACKNOWLEDGEMENTS
+
+This module is derived from L<Text::WikiFormat|Text::WikiFormat>, written by chromatic.
+
 =head1 AUTHOR
 
 "G. Allen Morris III" <gam3@gam3.net>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2008 G. Allen Morris III, all rights reserved.
+Copyright (C) 2008-2009 G. Allen Morris III, all rights reserved.
 
 =head1 LICENSE
 
