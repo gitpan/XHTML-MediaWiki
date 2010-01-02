@@ -1,6 +1,17 @@
-use Test::More tests => 7;
+use Test::More;
 use Test::XML;
-use Test::Exception;
+
+BEGIN {
+    eval {
+	require Test::Exception;
+	Test::Exception->import();
+    };
+    if ($@) {
+	plan skip_all => "Test::Exception needed";
+    }
+}
+
+plan tests => 7;
 
 use XHTML::MediaWiki;
 

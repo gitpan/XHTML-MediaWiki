@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.55.
+signed via the Module::Signature module, version 0.61.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,22 +14,25 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 e48c2567c5cb1b015ce19bc055a85b8160506e2c Build.PL
-SHA1 0bbb6e0847ee0cfb894ef57d1cd0a0345c288287 Changes
-SHA1 1a63c56ec964b39b5f22a4dc9e206b3b93464233 MANIFEST
-SHA1 6624390a1113a318d7c1391d3fe6fa8f5ed35e45 META.yml
-SHA1 21da65b3c3ef9f8e16e4718434c94b05524c2399 Makefile.PL
-SHA1 00ce458c5ae793deba5f24383b2bf2924df726fc README
-SHA1 a1660940a164806611fe23755d7561c3d96f3b23 lib/XHTML/MediaWiki.pm
+SHA1 07b523fb3f598101399bb9c9fd2fd2f79e40cfc8 .gitignore
+SHA1 47d724ae25c6f3ce549f335abe5eb4ba266c0ff2 Build.PL
+SHA1 cad15cab1ba031dd84822648e7624e8f230187c8 Changes
+SHA1 2273a2e05264bfc24133cf6fd6653b1fd3c41b3d MANIFEST
+SHA1 9a0b97031d31040e75e60e0bcf6904a86f620e0e META.yml
+SHA1 594c890e6cbb224d59bb16a79b118ed01d0ce957 Makefile.PL
+SHA1 2a8eec20537e4f2deb1ce957a34937a39b4aa091 README
+SHA1 e8e042824b778bc9bcbbef51753e46f6e28ef2b4 lib/XHTML/MediaWiki.pm
 SHA1 c9bc56dc40af36d8b9a36ddde1a5586d751ee0da t/blending.t
 SHA1 d5e8091b7e4ef0472247279110cbdd5ced38f5e8 t/cdata.t
+SHA1 3724a5df0a152f27abb6705d670812ceb47dd9dc t/changes.t
 SHA1 86c9715845d672e783b560bfe352189a37f57006 t/comment.t
 SHA1 db053789dece0cb8aa2c16896f1c5c335d1482a3 t/div.t
+SHA1 f2096d29c9a357963036e30c6f91407c2ac2430e t/footnotes.t
 SHA1 e724b9968d66c4d0c3e3ff09b5787eaef6845639 t/headers.t
-SHA1 30ff2d224882ddc809739d218c9197bf74c1b6b1 t/html.t
+SHA1 4dd044fd9561b6627809ce08cd31c4a2b979a928 t/html.t
 SHA1 bec6fdebdff35273fcf135c826a075546fe43139 t/line.t
 SHA1 1174bd5df8a3abefbbe34cd5cda611c8e8d08cbd t/links.t
-SHA1 a927ecf754a542be694e7cae4757fdc9e6a2f3c9 t/misc.t
+SHA1 ef9bed598d69d3fa24273aa30e1939ec5fe81b4c t/misc.t
 SHA1 8ee2fdd58f18d40893aad0c5105d9344c314cba2 t/nowiki.t
 SHA1 b73cf7d945591814d09c01ad7bf07a04d15fe0bf t/ordered.t
 SHA1 47194b231f1b11915a8b0e8b1d7d2997c8d00e57 t/para_break.t
@@ -37,14 +40,15 @@ SHA1 6f58b10bd30ac5842eeedc32ddb4c72902752011 t/paragraph.t
 SHA1 9d38eb83b6fa38c6d35dc1892b5a03f108e0719f t/pod.t
 SHA1 1255f17de94bf569503519d5e9a2c5d5692f800f t/pod_coverage.t
 SHA1 853a6a3b1652f9e0da439722fe6fb28115693216 t/pre.t
+SHA1 6e8e72c9d6607bf30cf18fdfac770b35b0fdd06a t/prewiki.t
 SHA1 d3aad5d8b00ef3ee5d878ed635da16a0a4e808f8 t/template.t
 SHA1 d781743e755d44ba9d310637f1419eacf067d27f t/test02.t
 SHA1 b4a0078a2a22fe90b963df1d08e322ad40e4177f t/unordered.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
+Version: GnuPG v1.4.10 (GNU/Linux)
 
-iGcEARECACcFAkowNfkgGmh0dHA6Ly93d3cuZ2FtMy5uZXQvcG9saWN5Lmh0bWwA
-CgkQliSr/X1H0FzlJQCgmzY7wZe3M2JEMEjaJZeWHn41wGUAn0PyxFxU81eZlzKT
-ZFdLAlW3uiYt
-=27FS
+iGcEARECACcFAks/dqwgGmh0dHA6Ly93d3cuZ2FtMy5uZXQvcG9saWN5Lmh0bWwA
+CgkQliSr/X1H0FwTFQCg50j8R+qFtaMAkvjgTo2SyhC7j8EAoKidgVMXm4k4f3uP
+ThefFqMmZUn0
+=jGW6
 -----END PGP SIGNATURE-----

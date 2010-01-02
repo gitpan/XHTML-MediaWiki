@@ -1,0 +1,11 @@
+blib/
+_build/
+Build
+cover_db/
+Debian_CPANTS.txt
+Makefile.PL
+pod2htmd.tmp
+pod2htmi.tmp
+README
+*.swp
+XHTML-MediaWiki*

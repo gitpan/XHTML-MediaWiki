@@ -8,20 +8,17 @@ package XHTML::MediaWiki;
 
 XHTML::MediaWiki - Translate Wiki markup into xhtml
 
-=head1 VERSION
-
-Version 0.06
-
 =cut
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
+$VERSION = eval $VERSION;
 
 our $DEBUG = 0;
 
 =head1 SYNOPSIS
 
 	use XHTML::MediaWiki;
-	my $mediawiki = XHTML::MediaWiki->new();
+	my $mediawiki = XHTML::MediaWiki->new( link_path => "http://example.com/base/" );
 	my $xhtm = $mediawiki->format($text);
 
 =head1 DESCRIPTION
@@ -43,14 +40,10 @@ use HTML::Parser;
 
 =over 4
 
-=item
-new
+=item * new( link_path => 'base path' )
 
-C<new> takes several named parameters:
-
-=item link_path
-
-C<link_path> is the C<base> url to use.  
+Create a new XHTML:;MediaWiki object.  C<link_path> is used as the base
+for hyperlinks.
 
 =back
 
@@ -70,12 +63,29 @@ sub new
 
 =over 4
 
-=item reset_counters()
+=item * format()
 
-call this method to reset the footnoot counter.
+The format method is the only method that needs to be called for the
+normal operation of this object.  You call format() with the raw I<wikitext> and
+it returns the xhtml representation of that I<wikitext>.
 
 =cut
 
+sub format
+{
+    my $self = shift;
+    my $raw = shift;
+
+    my $cooked = $self->_format($raw);
+
+    return $cooked;
+}
+
+=item * reset_counters()
+
+Call this method to reset the footnote counter.
+
+=cut
 
 sub reset_counters
 {
@@ -84,9 +94,14 @@ sub reset_counters
     $self->{footnote} = 0;
 }
 
-=item get_block()
+=head2 Overridable Methods
 
-If you would like to override the Block objects you can override this meathod.
+The following methods can be overridden to change the functionality of
+the object.
+
+=item * get_block()
+
+If you would like to override the Block objects you can override this method.
 
 =cut
 
@@ -270,9 +285,9 @@ sub get_block
     }
 }
 
-=item encode()
+=item * encode()
 
-You can override the enode function if you would like to change
+You can override the encode function if you would like to change
 what is encoded.  Currently only &, <, and > are encoded.
 
 =cut
@@ -532,8 +547,8 @@ die "This should have been handled by close_block";
 
         if (my $current = $self->{current_block}) {
             if ($p{auto_merge} && $p{new_state} eq $self->{current_block}->block_type) {
-		push(@{$current->{lines}}, $current->{line}) if ($current->{line});
-		$current->{line} = undef;
+                push(@{$current->{lines}}, $current->{line}) if ($current->{line});
+                $current->{line} = undef;
             } else {
                 push(@{$self->{blocks}},
                     $self->{current_block}
@@ -623,7 +638,7 @@ die "This should have been handled by close_block";
             my $tagstack = $self->{tag_stack};
             my $new_state = $self->{state} || 'paragraph';
             delete $self->{state};
-	    croak() if $new_state eq 'unordered';
+            croak() if $new_state eq 'unordered';
             $self->{current_block} = XHTML::MediaWiki::Parser::Block->new(type => $new_state);
             push @{$self->{tag_stack}}, 'paragraph';
         }
@@ -791,7 +806,7 @@ sub _find_blocks_in_html
                     }
                 }
             } elsif ($line =~ m/^\s(\s*.*)$/) {
-	        $line = $1;
+                $line = $1;
                 $parser->close_block( new_state => 'prewiki', auto_merge => 1 );
 
                 $parser->{last} = 'prewiki';
@@ -941,7 +956,7 @@ sub _strong
     "<strong>$_[1]</strong>";
 }
 
-=item emphasized()
+=item * emphasized()
 
 emphasized controls the output of "<em>" tags.
 
@@ -952,12 +967,12 @@ sub emphasized
     "<em>$_[1]</em>";
 }
 
-=item link()
+=item * link()
 
-The link method is often overridden to modify the dispaly and 
+The link method is often overridden to modify the display and 
 operation of links.
 
-link takes 3 arguments the Link, any extra_text, adn the type of the link;
+link takes 3 arguments the Link, any extra_text, and the type of the link;
 
 The type is true for footnotes.
 
@@ -978,9 +993,9 @@ sub link
    qq|<a href='$link'>$text$extra</a>|;
 }
 
-=item find_links()
+=item * find_links()
 
-The find_links() method is also often overridden in order to change the way 
+The C<find_links> method is also often overridden in order to change the way 
 links are detected.
 
 =cut
@@ -998,7 +1013,7 @@ sub find_links
     return $text;
 }
 
-=item template_text
+=item * template_text()
 
 Override this method to control the text that is generated for an unknown template ({{word}}).
 
@@ -1012,7 +1027,7 @@ sub template_text
     '<b style="color: red;">No template for: ' . $text . '</b>';
 }
 
-=item format_line
+=item * format_line()
 
 Override this method to extend or modify line level parsing.
 
@@ -1037,24 +1052,6 @@ sub format_line
     $text =~ s!$template_tag!$self->template_text($1)!eg;
    
     return $text;
-}
-
-=item format()
-
-The format method is the only method that needs to be called for the
-normal operation of this object.  You call format() with the raw I<wikitext> and
-it returns the xhtml representation of that I<wikitext>.
-
-=cut
-
-sub format
-{
-    my $self = shift;
-    my $raw = shift;
-
-    my $cooked = $self->_format($raw);
-
-    return $cooked;
 }
 
 # BLOCK code is below here and needs to be moved.
@@ -1228,7 +1225,7 @@ warn Dumper $self unless $line;
         my $current = $self->{added}->[-1] || $self;
         for my $block (@_) {
             my $index = $block->level - $self->level;
-	    die 'internal error' if $index <= 0;
+            die 'internal error' if $index <= 0;
             if ($index == 1) {
                 if (my $x = $current->{block}) {
                     $x->nest($block);
@@ -1445,4 +1442,3 @@ This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
-

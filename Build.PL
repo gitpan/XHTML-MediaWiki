@@ -14,7 +14,6 @@ my $builder = Module::Build->new(
     },
     build_requires => {
 	'Test::XML' => 0,
-	'Test::XML::Order' => 0,
     },
     recommends => {
         'Test::Pod' => 0,

@@ -1,28 +1,29 @@
 ---
 name: XHTML-MediaWiki
-version: 0.06
+version: 0.07
 author:
   - '"G. Allen Morris III" <gam3@gam3.net>'
 abstract: Convert MediaWiki text to xhtml
 license: perl
 resources:
   license: http://dev.perl.org/licenses/
+build_requires:
+  Test::XML: 0
 requires:
   HTML::Parser: 0
   Params::Validate: 0.85
   URI::Escape: 0
-  perl: 5.6.0
-build_requires:
-  Test::XML: 0
-  Test::XML::Order: 0
+  perl: v5.6.0
 recommends:
   Test::Pod: 0
   Test::Pod::Coverage: 0
+configure_requires:
+  Module::Build: 0.340201
 provides:
   XHTML::MediaWiki:
     file: lib/XHTML/MediaWiki.pm
-    version: 0.06
-generated_by: Module::Build version 0.280801
+    version: 0.07
+generated_by: Module::Build version 0.340201
 meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.2.html
-  version: 1.2
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
