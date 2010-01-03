@@ -10,7 +10,7 @@ XHTML::MediaWiki - Translate Wiki markup into xhtml
 
 =cut
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 $VERSION = eval $VERSION;
 
 our $DEBUG = 0;
@@ -85,6 +85,8 @@ sub format
 
 Call this method to reset the footnote counter.
 
+=back
+
 =cut
 
 sub reset_counters
@@ -98,6 +100,8 @@ sub reset_counters
 
 The following methods can be overridden to change the functionality of
 the object.
+
+=over 4
 
 =item * get_block()
 

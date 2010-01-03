@@ -1,6 +1,6 @@
 ---
 name: XHTML-MediaWiki
-version: 0.07
+version: 0.08
 author:
   - '"G. Allen Morris III" <gam3@gam3.net>'
 abstract: Convert MediaWiki text to xhtml
@@ -22,7 +22,7 @@ configure_requires:
 provides:
   XHTML::MediaWiki:
     file: lib/XHTML/MediaWiki.pm
-    version: 0.07
+    version: 0.08
 generated_by: Module::Build version 0.340201
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html

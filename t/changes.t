@@ -5,9 +5,8 @@ eval {
     Test::CheckChanges->import();
 };
 if ($@) {
-    plan skip => "Need Test::CheckChanges";
+    plan skip_all => "Need Test::CheckChanges";
 }
-
 
 ok_changes();
 

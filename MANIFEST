@@ -1,4 +1,3 @@
-.gitignore
 Build.PL
 Changes
 lib/XHTML/MediaWiki.pm
