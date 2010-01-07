@@ -13,7 +13,7 @@ my $builder = Module::Build->new(
     	'perl'             => '5.006_001',
     },
     meta_add => {
-        no_idex => {
+        no_index => {
 	    namespace => [
 		'XHTML::MediaWiki',
 	    ],

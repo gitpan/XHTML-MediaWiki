@@ -10,7 +10,7 @@ XHTML::MediaWiki - Translate Wiki markup into xhtml
 
 =cut
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 $VERSION = eval $VERSION;
 
 our $DEBUG = 0;

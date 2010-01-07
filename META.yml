@@ -12,13 +12,13 @@ meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: XHTML-MediaWiki
-no_idex:
+no_index:
   namespace:
     - XHTML::MediaWiki
 provides:
   XHTML::MediaWiki:
     file: lib/XHTML/MediaWiki.pm
-    version: 0.09
+    version: 0.10
   XHTML::MediaWiki::Block:
     file: lib/XHTML/MediaWiki.pm
   XHTML::MediaWiki::Block::Header:
@@ -56,4 +56,4 @@ requires:
   perl: 5.006_001
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.09
+version: 0.10

@@ -1,3 +1,6 @@
+0.10 Thu, 07 Jan 2010 16:10:05 -0500
+    - typo in Build.PL
+
 0.09 Thu, 07 Jan 2010 15:18:55 -0500
     - Added no_index to META.yml
 
