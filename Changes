@@ -1,3 +1,6 @@
+0.09 Thu, 07 Jan 2010 15:18:55 -0500
+    - Added no_index to META.yml
+
 0.08 Sun Jan 03 00:09:19 EDT 2010
     - Changes test was broken.
 

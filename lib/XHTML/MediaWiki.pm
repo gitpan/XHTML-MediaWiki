@@ -10,7 +10,7 @@ XHTML::MediaWiki - Translate Wiki markup into xhtml
 
 =cut
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 $VERSION = eval $VERSION;
 
 our $DEBUG = 0;
@@ -133,8 +133,7 @@ sub get_block
 #
 
 {
-    package
-      XHTML::MediaWiki::Parser::Block::Line;
+    package XHTML::MediaWiki::Parser::Block::Line;
 
     use Params::Validate qw (validate);
 
@@ -168,8 +167,7 @@ sub get_block
 
 }
 {
-    package
-      XHTML::MediaWiki::Parser::Block;
+    package XHTML::MediaWiki::Parser::Block;
 
     use Params::Validate qw (validate);
     use Carp qw(croak);
@@ -425,8 +423,7 @@ sub _html_text
 }
 
 {
-    package
-      XHTML::MediaWiki::Parser;
+    package XHTML::MediaWiki::Parser;
 
     use base 'HTML::Parser';
 
@@ -1061,8 +1058,7 @@ sub format_line
 # BLOCK code is below here and needs to be moved.
 
 {
-    package
-      XHTML::MediaWiki::Block::Start;
+    package XHTML::MediaWiki::Block::Start;
 
     use base "XHTML::MediaWiki::Block";
     sub formatted_text
@@ -1071,8 +1067,7 @@ sub format_line
     }
 }
 {
-    package
-      XHTML::MediaWiki::Block::Header;
+    package XHTML::MediaWiki::Block::Header;
 
     use base "XHTML::MediaWiki::Block";
 
@@ -1090,8 +1085,7 @@ sub format_line
 }
 
 {
-    package
-      XHTML::MediaWiki::Block::Special;
+    package XHTML::MediaWiki::Block::Special;
     use base "XHTML::MediaWiki::Block";
 
     sub formatted_text
@@ -1113,8 +1107,7 @@ sub format_line
     }
 }
 {
-    package
-      XHTML::MediaWiki::Block::P;
+    package XHTML::MediaWiki::Block::P;
     use base "XHTML::MediaWiki::Block";
 
     sub formatted_text
@@ -1124,8 +1117,7 @@ sub format_line
     }
 }
 {
-    package
-      XHTML::MediaWiki::Block::Paragraph;
+    package XHTML::MediaWiki::Block::Paragraph;
     use base "XHTML::MediaWiki::Block";
 
     use Carp qw(croak);
@@ -1157,8 +1149,7 @@ warn Dumper $self unless $line;
 }
 
 {
-    package
-      XHTML::MediaWiki::Block::Nested;
+    package XHTML::MediaWiki::Block::Nested;
     use base "XHTML::MediaWiki::Block";
 
     sub new
@@ -1249,22 +1240,19 @@ warn Dumper $self unless $line;
 }
 
 {
-    package
-      XHTML::MediaWiki::Block::Ordered;
+    package XHTML::MediaWiki::Block::Ordered;
     use base "XHTML::MediaWiki::Block::Nested";
     sub start_block { "<ol>\n" }
     sub end_block { "</ol>\n" }
 }
 {
-    package
-      XHTML::MediaWiki::Block::Unordered;
+    package XHTML::MediaWiki::Block::Unordered;
     use base "XHTML::MediaWiki::Block::Nested";
     sub start_block { "<ul>\n" }
     sub end_block { "</ul>\n" }
 }
 {
-    package
-      XHTML::MediaWiki::Block::Pre;
+    package XHTML::MediaWiki::Block::Pre;
     use base "XHTML::MediaWiki::Block";
 
     sub formatted_text {
@@ -1275,8 +1263,7 @@ warn Dumper $self unless $line;
     }
 }
 {
-    package
-      XHTML::MediaWiki::Block::Prewiki;
+    package XHTML::MediaWiki::Block::Prewiki;
     use base "XHTML::MediaWiki::Block";
 
     sub formatted_text
@@ -1289,8 +1276,7 @@ warn Dumper $self unless $line;
     }
 }
 {
-    package
-      XHTML::MediaWiki::Block::Ruby;
+    package XHTML::MediaWiki::Block::Ruby;
     use base "XHTML::MediaWiki::Block";
 
     sub formatted_text
@@ -1302,8 +1288,7 @@ warn Dumper $self unless $line;
     }
 }
 {
-    package
-      XHTML::MediaWiki::Block;
+    package XHTML::MediaWiki::Block;
     use Params::Validate qw (validate ARRAYREF);
 
     sub new
@@ -1438,7 +1423,7 @@ This module is derived from L<Text::WikiFormat|Text::WikiFormat>, written by chr
 
 =head1 COPYRIGHT
 
-Copyright (C) 2008-2009 G. Allen Morris III, all rights reserved.
+Copyright (C) 2008-2010 G. Allen Morris III, all rights reserved.
 
 =head1 LICENSE
 
