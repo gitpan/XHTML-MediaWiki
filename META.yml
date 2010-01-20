@@ -18,7 +18,7 @@ no_index:
 provides:
   XHTML::MediaWiki:
     file: lib/XHTML/MediaWiki.pm
-    version: 0.10
+    version: 0.11
   XHTML::MediaWiki::Block:
     file: lib/XHTML/MediaWiki.pm
   XHTML::MediaWiki::Block::Header:
@@ -56,4 +56,4 @@ requires:
   perl: 5.006_001
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.10
+version: 0.11

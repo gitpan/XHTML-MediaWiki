@@ -1,4 +1,4 @@
-use Test::More tests => 7;
+use Test::More;
 use Test::XML;
 
 BEGIN {
@@ -10,6 +10,8 @@ BEGIN {
 	plan skip_all => "Test::Exception needed";
     }
 }
+
+plan tests => 7;
 
 use XHTML::MediaWiki;
 

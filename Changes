@@ -1,3 +1,6 @@
+0.11 Wed, 20 Jan 2010 17:08:54 -0500
+    - misplaced plan in t/html.t
+
 0.10 Thu, 07 Jan 2010 16:10:05 -0500
     - typo in Build.PL
 
